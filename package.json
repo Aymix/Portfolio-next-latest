@@ -12,6 +12,7 @@
     "@types/react-modal": "^3.16.3",
     "@types/react-slick": "^0.23.13",
     "next": "15.1.6",
+    "posthog-js": "^1.372.1",
     "react": "^19.0.0",
     "react-country-flag": "^3.1.0",
     "react-dom": "^19.0.0",
