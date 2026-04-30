@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -265,7 +265,57 @@ const works: Work[] = [
 
 const SelectedWorks = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalWorkIndex, setModalWorkIndex] = useState<number | null>(null);
+
+  const nonNdaWorks = works.filter(w => !w.tags.includes('NDA'));
+
+  useEffect(() => {
+    Modal.setAppElement('body');
+  }, []);
+
+  const openModal = (image: string) => {
+    const index = nonNdaWorks.findIndex(w => w.image === image);
+    setModalWorkIndex(index !== -1 ? index : null);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalWorkIndex(null);
+  };
+
+  const nextWork = () => {
+    if (modalWorkIndex !== null) {
+      setModalWorkIndex((modalWorkIndex + 1) % nonNdaWorks.length);
+    }
+  };
+
+  const prevWork = () => {
+    if (modalWorkIndex !== null) {
+      setModalWorkIndex((modalWorkIndex - 1 + nonNdaWorks.length) % nonNdaWorks.length);
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isModalOpen) return;
+      if (e.key === 'ArrowRight') nextWork();
+      if (e.key === 'ArrowLeft') prevWork();
+      if (e.key === 'Escape') closeModal();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isModalOpen, modalWorkIndex]);
+
   const allTags = getAllUniqueTags(works);
+
+  const getThumbnail = (image: string) => {
+    if (image.startsWith('/screenshots/')) {
+      return image.replace('/screenshots/', '/thumbnails/');
+    }
+    return image;
+  };
 
   const normalizeTag = (tag: string): string => {
     // Normalize tags to handle case-insensitive matching and common variations
@@ -326,24 +376,34 @@ const SelectedWorks = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {filteredWorks.map((work, index) => (
             <div
               key={index}
-              className="block group"
+              className="block group animate-in fade-in slide-in-from-bottom-4 duration-700"
+              style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="bg-white border border-[#e5e7eb] rounded-3xl overflow-hidden hover:shadow-lg transition-all">
                 <div className={`relative aspect-[4/3] w-full p-6 ${!work.tags.includes('NDA') ? 'cursor-pointer' : ''}`}
-                  onClick={() => !work.tags.includes('NDA') && console.log('Modal functionality removed')}
+                  onClick={() => !work.tags.includes('NDA') && openModal(work.image)}
                 >
-                  <div className="relative w-full h-full">
+                  <div className="relative w-full h-full group/img">
                     <Image
-                      src={work.tags.includes('NDA') ? '/nda-placeholder.png' : work.image}
+                      src={work.tags.includes('NDA') ? '/nda-placeholder.png' : getThumbnail(work.image)}
                       alt={work.title}
                       fill
-                      className={`object-cover object-top rounded-2xl ${work.tags.includes('NDA') ? 'blur-md' : ''
+                      className={`object-cover object-top rounded-2xl transition-transform duration-500 group-hover/img:scale-[1.02] ${work.tags.includes('NDA') ? 'blur-md' : ''
                         }`}
                     />
+                    {!work.tags.includes('NDA') && (
+                      <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/10 transition-all duration-300 flex items-center justify-center opacity-0 group-hover/img:opacity-100 rounded-2xl">
+                        <div className="bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                          </svg>
+                        </div>
+                      </div>
+                    )}
                     {work.tags.includes('NDA') && (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <FiEyeOff className="text-white text-4xl bg-black/20 p-2 rounded-full" />
@@ -382,6 +442,72 @@ const SelectedWorks = () => {
           ))}
         </div>
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Image Modal"
+        className="fixed inset-0 flex items-center justify-center z-50 p-4 lg:p-8 outline-none"
+        overlayClassName="fixed inset-0 bg-black/95 backdrop-blur-xl z-40"
+        closeTimeoutMS={300}
+      >
+        <div className="relative w-full h-full flex flex-col items-center justify-center">
+          {/* Close Button */}
+          <button
+            onClick={closeModal}
+            className="absolute top-4 right-4 z-[60] text-white/50 hover:text-white transition-all bg-white/10 hover:bg-white/20 p-3 rounded-full backdrop-blur-md"
+            aria-label="Close modal"
+          >
+            <FaTimes className="text-xl" />
+          </button>
+
+          {/* Navigation Buttons */}
+          <button
+            onClick={(e) => { e.stopPropagation(); prevWork(); }}
+            className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-[60] text-white/50 hover:text-white transition-all bg-white/10 hover:bg-white/20 p-4 rounded-full backdrop-blur-md group"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <button
+            onClick={(e) => { e.stopPropagation(); nextWork(); }}
+            className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-[60] text-white/50 hover:text-white transition-all bg-white/10 hover:bg-white/20 p-4 rounded-full backdrop-blur-md group"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+          
+          <div className="relative w-full max-w-5xl h-[80vh] flex flex-col items-center justify-center animate-in fade-in zoom-in duration-300">
+            {modalWorkIndex !== null && (
+              <>
+                <div className="relative w-full h-full bg-transparent rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+                  <Image
+                    src={nonNdaWorks[modalWorkIndex].image}
+                    alt={nonNdaWorks[modalWorkIndex].title}
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+                
+                <div className="mt-8 text-center bg-black/40 backdrop-blur-md px-8 py-4 rounded-2xl border border-white/5 shadow-xl">
+                  <h3 className="text-2xl font-serif text-white mb-1">
+                    {nonNdaWorks[modalWorkIndex].title}
+                  </h3>
+                  <div className="flex items-center justify-center gap-2 text-white/40 text-sm">
+                    <span>{modalWorkIndex + 1}</span>
+                    <span className="w-1 h-1 bg-white/20 rounded-full"></span>
+                    <span>{nonNdaWorks.length} projects</span>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </Modal>
     </section>
   );
 };

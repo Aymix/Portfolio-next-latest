@@ -6,7 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "thumbnails": "node generate-thumbnails.js",
+    "thumbnails:force": "node generate-thumbnails.js --force",
+    "compress:heavy": "node compress-heavy.js"
   },
   "dependencies": {
     "@types/react-modal": "^3.16.3",
