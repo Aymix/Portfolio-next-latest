@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import { asset } from '@/lib/assets';
 
 const HeroSection = () => {
   return (
@@ -7,7 +8,7 @@ const HeroSection = () => {
       <div className="flex flex-col items-center lg:items-start gap-6 w-full max-w-[600px] lg:max-w-none text-center lg:text-left">
         <div className="relative w-40 h-40 md:w-56 md:h-56 lg:w-64 lg:h-64 mx-auto lg:mx-0">
           <Image
-            src="/profile-image.jpeg"
+            src={asset("/profile-image.jpeg")}
             alt="Profile"
             fill
             className="rounded-[35px] object-cover"

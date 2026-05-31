@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { asset } from '@/lib/assets';
 import { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import Slider from 'react-slick';
@@ -389,7 +390,7 @@ const SelectedWorks = () => {
                 >
                   <div className="relative w-full h-full group/img">
                     <Image
-                      src={work.tags.includes('NDA') ? '/nda-placeholder.png' : getThumbnail(work.image)}
+                      src={work.tags.includes('NDA') ? asset('/nda-placeholder.png') : asset(getThumbnail(work.image))}
                       alt={work.title}
                       fill
                       className={`object-cover object-top rounded-2xl transition-transform duration-500 group-hover/img:scale-[1.02] ${work.tags.includes('NDA') ? 'blur-md' : ''
@@ -485,7 +486,7 @@ const SelectedWorks = () => {
               <>
                 <div className="relative w-full h-full bg-transparent rounded-2xl overflow-hidden shadow-2xl border border-white/10">
                   <Image
-                    src={nonNdaWorks[modalWorkIndex].image}
+                    src={asset(nonNdaWorks[modalWorkIndex].image)}
                     alt={nonNdaWorks[modalWorkIndex].title}
                     fill
                     className="object-contain"

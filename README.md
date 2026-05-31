@@ -31,6 +31,24 @@ For deployment (Render), add `NEXT_PUBLIC_POSTHOG_KEY` and `NEXT_PUBLIC_POSTHOG_
 as environment variables in the service settings. Without a key set, analytics are silently
 disabled, so the site still runs fine locally.
 
+## Image CDN (MinIO / S3)
+
+Images are served as optimized WebP from a MinIO bucket (78% smaller than the
+original PNGs) instead of from the Next.js server. This is controlled by
+`NEXT_PUBLIC_ASSET_BASE_URL` (see `.env.example`):
+
+- **Set** → `src/lib/assets.ts` rewrites every image path to `<base>/<path>.webp`.
+- **Unset** → falls back to the original files in `/public` (local dev still works).
+
+To regenerate and re-upload after adding/changing images in `/public`:
+
+```bash
+node optimize-and-upload.js          # writes resized WebP to /tmp/portfolio-cdn
+mc mirror --overwrite /tmp/portfolio-cdn <alias>/portfolio
+```
+
+Remember to add `NEXT_PUBLIC_ASSET_BASE_URL` to the Render environment too.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { asset } from '@/lib/assets';
 
 interface Experience {
   title: string;
@@ -67,7 +68,7 @@ const WorkExperience = () => {
                   <div className="absolute inset-0 bg-gray-100 rounded-full overflow-hidden flex items-center justify-center p-2 sm:p-3">
                     <div className="relative w-full h-full">
                       <Image
-                        src={experience.logo}
+                        src={asset(experience.logo)}
                         alt={`${experience.company} logo`}
                         fill
                         className="object-contain"
