@@ -16,6 +16,21 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Analytics (PostHog)
+
+Visitor analytics are tracked with [PostHog](https://posthog.com) (free tier: 1M events/month).
+
+1. Sign up at https://posthog.com and create a project.
+2. Copy `.env.example` to `.env.local` and paste your Project API Key:
+   ```bash
+   cp .env.example .env.local
+   ```
+3. Restart the dev server. Pageviews are captured automatically (including SPA navigations).
+
+For deployment (Render), add `NEXT_PUBLIC_POSTHOG_KEY` and `NEXT_PUBLIC_POSTHOG_HOST`
+as environment variables in the service settings. Without a key set, analytics are silently
+disabled, so the site still runs fine locally.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
