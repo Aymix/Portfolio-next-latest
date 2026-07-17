@@ -127,7 +127,7 @@ const IntroSection = () => {
           </a>
 
           <a
-            href="https://drive.google.com/file/d/1-ilyvq2EpUSTgv6mo-yxbf1hpeiRHTZ-/view?usp=sharing"
+            href="https://minio-hosoo0wcgscc8sgckgok4444.31.97.193.81.sslip.io/portfolio/cv-aymenhmida.pdf"
             download
             title="Download CV"
             className="flex items-center justify-center p-3 md:p-4 border-2 border-[#101010] text-[#101010] rounded-full hover:bg-[#101010] hover:text-white transition-all duration-300 shadow-sm hover:shadow-md group w-[46px] h-[46px] md:w-[54px] md:h-[54px]"
