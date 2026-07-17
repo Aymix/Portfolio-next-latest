@@ -76,7 +76,7 @@ const IntroSection = () => {
         What you should know about him.
       </h3>
       <h2 className="text-[28px] md:text-[36px] lg:text-[42px] font-serif text-[#101010] leading-[1.2] mx-auto lg:mx-0 max-w-[500px] lg:max-w-none">
-        Senior Software Developer with 8 years experience
+        Senior Full Stack &amp; Mobile Developer with 9 years experience
       </h2>
 
       <div className="flex flex-col gap-6 mt-8 w-full items-center lg:items-start">

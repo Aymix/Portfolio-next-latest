@@ -10,31 +10,37 @@ interface Experience {
 
 const experiences: Experience[] = [
   {
-    title: "Senior Frontend Developer",
+    title: "DevOps Engineer",
+    company: "PLANISPHERE SYSTEMS",
+    period: "10/2025 – Present",
+    logo: "/company-logos/planisphere.png"
+  },
+  {
+    title: "Mobile Developer",
     company: "AMITECHSS",
-    period: "09/2024 – Present",
+    period: "09/2024 – 10/2025",
     logo: "/company-logos/amitechss.png"
   },
   {
-    title: "Fullstack Web Engineer",
+    title: "Full Stack Developer",
     company: "ACOBA",
-    period: "08/2022 – 08/2024",
+    period: "05/2022 – 07/2024",
     logo: "/company-logos/acoba.png"
   },
   {
-    title: "Senior Software Engineer",
+    title: "Full Stack Developer",
     company: "ITWORX",
-    period: "03/2020 - 07/2022",
+    period: "03/2020 – 05/2022",
     logo: "/company-logos/itworx.png"
   },
   {
     title: "Web Developer",
     company: "IT GATE",
-    period: "09/2019 – 03/2020",
+    period: "07/2019 – 01/2020",
     logo: "/company-logos/itgate.png"
   },
   {
-    title: "Fullstack Developer",
+    title: "Full Stack Developer",
     company: "DRAWNDESIGN",
     period: "09/2017 – 07/2019",
     logo: "/company-logos/drawndesign.png"

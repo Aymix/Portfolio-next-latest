@@ -30,7 +30,7 @@ const services: Service[] = [
   },
   {
     title: "Cloud & DevOps",
-    description: "Deploying and managing applications on AWS and Azure. Proficient in Docker containerization and infrastructure management.",
+    description: "Managing AWS and Azure cloud infrastructure with Terraform (IaC), GitOps and automated CI/CD pipelines using GitHub Actions. Proficient in Docker containerization, monitoring and incident troubleshooting.",
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#101010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
